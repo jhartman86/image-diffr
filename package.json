@@ -1,0 +1,21 @@
+{
+  "name": "image-diffr",
+  "version": "0.0.1",
+  "description": "Diff two images",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "image-diffr": "./bin/image-diffr"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.9.0",
+    "ffmpeg-image-diff": "^1.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0"
+  }
+}
