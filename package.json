@@ -9,7 +9,7 @@
     "lint": "eslint lib/ test/",
     "prepublish": "npm run test",
     "preversion": "npm run test",
-    "postversion": "git add -A && git push && git push --tags"
+    "postversion": "git push && git push --tags"
   },
   "bin": {
     "image-diffr": "./bin/image-diffr"
