@@ -5,17 +5,22 @@ process.env.IMAGE_DIFFR_CLI = true;
 
 const program   					= require('commander');
 const pkgJson   					= require('../package.json');
-const log									= require('../src/logger');
-const { exec, defaults }	= require('../src');
+const log									= require('../lib/logger');
+const { exec, defaults }	= require('../lib');
 
 program
 	.version(pkgJson.version)
 	.arguments('<filepath1> <filepath2>')
-	.option('-t, --threshold [threshold]', 'Diff comparison threshold (0-1, eg. 0.25)')
-	.option('-o, --output [output]', 'Image diff output (absolute path, eg. /tmp/diff-image.jpg)')
-	.option('-q, --quiet [quiet]', 'Skip detailed output and show diff percentage only', (val) => {
-		return !!(val);
-	})
+	.option('-t, --threshold [threshold]',
+		'Diff comparison threshold (0-1, eg. 0.25)'
+	)
+	.option('-o, --output [output]',
+		'Image diff output (absolute path, eg. /tmp/diff-image.jpg)'
+	)
+	.option('-q, --quiet [quiet]',
+		'Skip detailed output and show diff percentage only',
+		(val) => { return !!(val); }
+	)
 	.action((filePath1, filePath2, options) => {
 		if (filePath1 && filePath2) {
 			exec(filePath1, filePath2, {

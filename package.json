@@ -2,15 +2,38 @@
   "name": "image-diffr",
   "version": "0.0.1",
   "description": "Diff two images",
-  "main": "./src/index.js",
+  "main": "./lib/index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha"
+    "pretest": "npm run lint",
+    "test": "./node_modules/.bin/mocha",
+    "lint": "eslint lib/ test/",
+    "prepublish": "npm run test",
+    "preversion": "npm run test",
+    "version": "git add -A",
+    "postversion": "git push && git push --tags"
   },
   "bin": {
     "image-diffr": "./bin/image-diffr"
   },
-  "author": "",
-  "license": "ISC",
+  "directories": {
+    "lib": "./lib",
+    "test": "./test"
+  },
+  "author": "Jon Hartman",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jhartman86/image-diffr.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jhartman86/image-diffr/issues"
+  },
+  "homepage": "https://github.com/jhartman86/image-diffr#readme",
+  "keywords": [
+    "image",
+    "diff",
+    "image-diff"
+  ],
   "dependencies": {
     "chalk": "1.1.3",
     "commander": "2.9.0",

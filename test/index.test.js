@@ -2,7 +2,7 @@ const path        = require('path');
 const sinon       = require('sinon');
 const nock        = require('nock');
 const { expect }  = require('chai');
-const diff        = require('../src');
+const diff        = require('../lib');
 const Jimp        = require('jimp');
 
 /**
@@ -89,7 +89,7 @@ describe('diff.exec', function () {
       }).catch(done);
     });
 
-    it('with threshold 0.25 should be (diff % = 0.008577256944444445)', done => {
+    it('with threshold 0.25 should be (diff % = 0.008577256944444445)', done => { // eslint-disable-line
       diff.exec(jupiter1, jupiter2, {threshold:0.25}).then(diff => {
         expect(diff.percent).to.equal(0.008577256944444445);
         done();
@@ -136,7 +136,7 @@ describe('diff.exec', function () {
       const output = './image-diff-test.png';
       diff
         .exec(glasses1, glasses2, {output})
-        .then(diff => {
+        .then(() => {
           expect(stub.callCount).to.equal(1);
           expect(writes.length).to.equal(1);
           expect(writes[0]).to.equal(path.resolve(output));
