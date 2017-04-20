@@ -1,6 +1,6 @@
 {
   "name": "image-diffr",
-  "version": "0.1.2",
+  "version": "0.1.0",
   "description": "Diff two images",
   "main": "./lib/index.js",
   "scripts": {
@@ -9,8 +9,7 @@
     "lint": "eslint lib/ test/",
     "prepublish": "npm run test",
     "preversion": "npm run test",
-    "version": "git add -A",
-    "postversion": "git push && git push --tags"
+    "postversion": "git add -A && git push && git push --tags"
   },
   "bin": {
     "image-diffr": "./bin/image-diffr"
