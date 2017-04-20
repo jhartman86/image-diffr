@@ -1,24 +1,36 @@
 #!/usr/bin/env node
 
-const program   = require('commander');
-const pkgJson   = require('../package.json');
-const { diff }  = require('../src');
+// Set command line flag to true
+process.env.IMAGE_DIFFR_CLI = true;
 
-let filePath1, filePath2;
+const program   					= require('commander');
+const pkgJson   					= require('../package.json');
+const log									= require('../src/logger');
+const { exec, defaults }	= require('../src');
 
 program
-    .version(pkgJson.version)
-    .arguments('<filepath1> <filepath2>')
-    .action((_filePath1, _filePath2) => {
-        filePath1 = _filePath1;
-        filePath2 = _filePath2;
-        if (filePath1 && filePath2) {
-            return diff(filePath1, filePath2);
-        }
-    });
+	.version(pkgJson.version)
+	.arguments('<filepath1> <filepath2>')
+	.option('-t, --threshold [threshold]', 'Diff comparison threshold (0-1, eg. 0.25)')
+	.option('-o, --output [output]', 'Image diff output (absolute path, eg. /tmp/diff-image.jpg)')
+	.option('-q, --quiet [quiet]', 'Skip detailed output and show diff percentage only', (val) => {
+		return !!(val);
+	})
+	.action((filePath1, filePath2, options) => {
+		if (filePath1 && filePath2) {
+			exec(filePath1, filePath2, {
+				threshold: 	+(options.threshold) || defaults.threshold,
+				output: 		options.output || defaults.output,
+				quiet:			options.quiet || defaults.quiet
+			})
+			.catch(err => {
+				log.write('', log.bgRed(err.message), '');
+			});
+		}
+	});
 
+// Parse stdin
 program.parse(process.argv);
 
-if (!filePath1 || !filePath2) {
-    program.help();
-}
+// If no arguments, show help
+!program.args.length && program.help();
