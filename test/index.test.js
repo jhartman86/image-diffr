@@ -1,9 +1,11 @@
-const path        = require('path');
-const sinon       = require('sinon');
-const nock        = require('nock');
-const { expect }  = require('chai');
-const diff        = require('../lib');
-const Jimp        = require('jimp');
+'use strict';
+
+const path    = require('path');
+const sinon   = require('sinon');
+const nock    = require('nock');
+const expect  = require('chai').expect;
+const diff    = require('../lib');
+const Jimp    = require('jimp');
 
 /**
  * Things that are implicitly tested just because of how we use the
