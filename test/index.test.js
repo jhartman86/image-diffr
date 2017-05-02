@@ -117,31 +117,79 @@ describe('diff.exec', function () {
    * the getDiffImage function, so we can stub it out here.
    */
   context('when writing diff file output', function () {
-    const writes = [];
+    const realGetDiffImage = diff.getDiffImage;
+    let writePath;
     let stub;
 
-    before(() => {
-      stub = sinon.stub(diff, 'getDiffImage').callsFake(() => {
-        return {
-          image: {
-            write(path) {
-              writes.push(path);
-            }
-          }
-        };
+    /**
+     * This isn't the easiest thing to understand, so...
+     * 1) Stub the getDiffImage public method on the library
+     * 2) Have stub return a real instance of the results of diff.getDiffImage(),
+     *    but with the "image.write" method stubbed out.
+     * 3) The "write" method of the image instance is where we want to collect
+     *    the outputPath. OR, how we want to check that "write" was *not*
+     *    invoked.
+     */
+    beforeEach(() => {
+      stub = sinon.stub(diff, 'getDiffImage').callsFake(function () {
+        const realDiff = realGetDiffImage.apply(null, arguments);
+        sinon.stub(realDiff.image, 'write').callsFake(function (outputPath) {
+          writePath = outputPath;
+          realDiff.image.write.restore();
+        });
+        return realDiff;
       });
     });
 
-    after(() => { stub.restore(); });
+    afterEach(() => {
+      stub.restore();
+      stub = null;
+      writePath = null;
+    });
 
-    it('should invoke .write() method on diff.image', done => {
-      const output = './image-diff-test.png';
+    it('should write image diff, if different, by default', done => {
+      const output = './outputTest1.png';
       diff
         .exec(glasses1, glasses2, {output})
         .then(() => {
           expect(stub.callCount).to.equal(1);
-          expect(writes.length).to.equal(1);
-          expect(writes[0]).to.equal(path.resolve(output));
+          expect(writePath).to.equal(path.resolve(output));
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should not write image diff, if same, by default', done => {
+      const output = './outputTest2.png';
+      diff
+        .exec(glasses1, glasses1, {output})
+        .then(() => {
+          expect(stub.callCount).to.equal(1);
+          expect(writePath).to.equal(null);
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should always write image diff, when different', done => {
+      const output = './outputTest3.png';
+      diff
+        .exec(glasses1, glasses2, {output, outputOnlyIfDifferent:false})
+        .then(() => {
+          expect(stub.callCount).to.equal(1);
+          expect(writePath).to.equal(path.resolve(output));
+          done();
+        })
+        .catch(done);
+    });
+
+    it('should always write image diff, when no difference', done => {
+      const output = './outputTest4.png';
+      diff
+        .exec(glasses1, glasses1, {output, outputOnlyIfDifferent:false})
+        .then(() => {
+          expect(stub.callCount).to.equal(1);
+          expect(writePath).to.equal(path.resolve(output));
           done();
         })
         .catch(done);
