@@ -45,6 +45,10 @@ or to use as a module in another project:
     Output an image highlighting the differences between the two input images. The file extension you specify in the name of the output file name (.jpg below) should match the input file types.
 
         image-diffr ./path/to/1.png ./path/to/2.png -o /tmp/diff.jpg
+
+  - Output Only If Different `-d [true|false], --differentonly [true|false]`
+
+    If using the `output` option to render a diff of the two images to disk, should it only output *if there is a difference*?
   
   - Quit `-q, --quiet`
 
@@ -60,11 +64,12 @@ or to use as a module in another project:
 
         Options:
 
-        -h, --help                   output usage information
-        -V, --version                output the version number
-        -t, --threshold [threshold]  Diff comparison threshold (0-1, eg. 0.25)
-        -o, --output [output]        Image diff output (absolute path, eg. /tmp/diff-image.jpg)
-        -q, --quiet [quiet]          Skip detailed output and show diff percentage only
+        -h, --help                           output usage information
+        -V, --version                        output the version number
+        -t, --threshold [threshold]          Diff comparison threshold (0-1, eg. 0.25)
+        -o, --output [output]                Image diff output (absolute path, eg. /tmp/diff-image.jpg)
+        -d, --differentonly [differentonly]  Only write output image (-o/--output flags) if different
+        -q, --quiet [quiet]                  Skip detailed output and show diff percentage only
 
 ---
 
@@ -92,13 +97,17 @@ The `.exec()` method returns a Promise, which resolves with a _Jimp_ image insta
 
 ### Options
 
-  - Threshold `{threshold:float}` [optional | default: 0]
+  - Threshold `{threshold: 0.1}` [optional | default: 0]
 
     How stringent should the comparison be (0 to 1: 0 being perfect match, 1 being pretty damn lack·a·dai·si·cal).
     
   - Output `{output: '/path/somewhere.jpg'}` [optional | default: null]
 
     Output an image highlighting the differences between the two input images. The file extension you specify in the name of the output file name (.jpg below) should match the input file types.
+
+  - Output Only If Different `{outputOnlyIfDifferent: true}` [optional | default: true]
+
+    If using the `output` option to render a diff of the two images to disk, should it only output *if there is a difference*?
 
 ---
 

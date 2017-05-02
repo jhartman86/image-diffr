@@ -17,6 +17,10 @@ program
 	.option('-o, --output [output]',
 		'Image diff output (absolute path, eg. /tmp/diff-image.jpg)'
 	)
+	.option('-d, --differentonly [differentonly]',
+		'Only write output image (-o/--output flags) if different',
+		(val) => { return val === 'true'; }
+	)
 	.option('-q, --quiet [quiet]',
 		'Skip detailed output and show diff percentage only',
 		(val) => { return !!(val); }
@@ -26,7 +30,9 @@ program
 			exec(filePath1, filePath2, {
 				threshold: 	+(options.threshold) || defaults.threshold,
 				output: 		options.output || defaults.output,
-				quiet:			options.quiet || defaults.quiet
+				quiet:			options.quiet || defaults.quiet,
+				outputOnlyIfDifferent: options.differentonly 
+					|| defaults.outputOnlyIfDifferent
 			})
 			.catch(err => {
 				log.write('', log.bgRed(err.message), '');
