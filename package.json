@@ -1,6 +1,6 @@
 {
   "name": "image-diffr",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Diff two images",
   "main": "./lib/index.js",
   "scripts": {
