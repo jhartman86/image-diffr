@@ -9,9 +9,9 @@
     "lint": "eslint lib/ test/",
     "preversion": "npm run test",
     "postversion": "git push && git push --tags",
-    "release-patch": "npm run test && npm version patch && npm publish",
-    "release-minor": "npm run test && npm version minor && npm publish",
-    "release-major": "npm run test && npm version major && npm publish"
+    "release-patch": "npm version patch && npm publish",
+    "release-minor": "npm version minor && npm publish",
+    "release-major": "npm version major && npm publish"
   },
   "bin": {
     "image-diffr": "./bin/image-diffr"
